@@ -1,0 +1,196 @@
+
+<!-- THIS GAME IS NOT ASSOCIATED WITH BRAWLHALLA OR BLUE MAMMOTH
+IN ANY WAY. JUST A FUN PROJECT SINCE I'M TRYING TO LEARN HOW TO CODE/PROGRAM
+ MUNIN IS ALSO BROKEN. SEVERLY BROKEN-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brawlbird</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    * { 
+  margin: 0; 
+  padding: 0; 
+}
+
+#game { 
+  height: 500px; 
+  width: 400px; 
+  border: 1px solid black; 
+  margin: 1rem auto; 
+  overflow: hidden; 
+  background-image: url(/imgs/brg.jpg)
+}
+
+#block { 
+  width: 50px; 
+  height: 500px; 
+  background-color: green; 
+  position: relative; 
+  left: 400px; 
+  animation: block 2s linear infinite; 
+}
+
+@keyframes block {
+    0%{
+      left: 400px;
+    }
+    100%{
+      left: -50px; 
+    }
+}
+
+#hole { 
+  height: 150px; 
+  width: 50px; 
+  background-color: white;
+  position: relative; 
+  left: 400px; 
+  top: -500px; 
+  animation: block 2s linear infinite; 
+}
+
+#bird img {
+  height: 70px; 
+  width: 70px; 
+}
+
+#bird { 
+  position: absolute; 
+  top: 100px; 
+  height: 50px; 
+  width: 50px; 
+}
+
+#result { 
+  height: 200px; 
+  width: 500px; 
+  
+  background-color:black;
+  margin: 5rem auto; 
+  border: 2px solid white; 
+  border-radius: 20px;
+  display: none; 
+  text-align: center; 
+}
+
+#btn {
+  padding: 0.5rem 1rem; 
+  border: none; 
+  border-radius: 11px; 
+  background-color: red; 
+  color: white; 
+  font-size: 1.5rem; 
+  text-transform: uppercase; 
+  margin-top: 1rem; 
+  cursor: pointer;
+}
+
+#text {
+  margin-top: 1rem; 
+  font-size: 2rem; 
+  color: gold; 
+  font-weight: bolder;
+
+}
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div id="block">
+      </div>
+      <div id="hole">
+        </div>
+        <div id="bird"> <img src="imgs/bird1.png" alt="bird">
+
+        </div>
+      </div>
+    </div>
+  </div>
+<div id="result">
+  <h1>Game over</h1>
+  <p id="text"></p>
+  <button id="btn" onclick="location.reload()">Restart</button>
+
+  
+</div>
+
+<audio>
+  <source src="audio/Brawlhalla Theme - Soundtrack OST.mp3" type="audio/mpeg"/>
+  Your browser cannot play this sound :(
+</audio>
+
+
+
+
+
+
+
+</body>
+</html>
+
+<script>
+  const hole= document.getElementById("hole");
+ var result = document.getElementById("result");
+ var text = document.getElementById("text");
+ var game  = document.getElementById("game");
+ var jumping = 0;
+ var score = 0;
+
+ //animation 
+
+hole.addEventListener("animationiteration", hol)
+
+ function hol(){
+     var random = -((Math.random()*350) +150)
+    hole.style.top = random + "px"
+    score++;
+ }
+
+
+//fall and game over
+  var fall = setInterval(function(){
+      var birdTop = parseInt(window.getComputedStyle(bird).getPropertyValue("top"));
+       if(jumping == 0){bird.style.top = (birdTop + 2) + "px";}
+
+       var blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue("left"))
+       var holeTop = parseInt(window.getComputedStyle(hole).getPropertyValue("top"))
+       var hTop = (500 + holeTop);
+       if((birdTop > 450) || ((blockLeft<50)&& (blockLeft > -50) && ((birdTop < hTop) || (birdTop > hTop + 100 )))){
+           result.style.display = "block";
+           text.innerText = `Score : ${score}`;
+           game.style.display = "none";
+           score = 0;
+
+
+       }
+
+
+
+
+  },10)
+
+
+  //jump
+ function jump(){
+    jumping = 1;
+
+    var birdTop = parseInt(window.getComputedStyle(bird).getPropertyValue("top"));
+    if(birdTop > 6){bird.style.top = (birdTop - 60 ) + "px"}
+
+    setTimeout(function(){
+        jumping = 0
+    }, 100)
+ }
+
+ window.addEventListener("click", jump) 
+ window.addEventListener("spacebar", jump) 
+ window.addEventListener("keydown", jump) 
+ window.addEventListener("w", jump) 
+</script>
